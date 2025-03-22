@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,19 @@
             --primary-color: #3498db;
             --secondary-color: #f8f9fa;
             --text-color: #333;
+            --background-color: #f0f2f5;
+            --card-background: white;
             --border-radius: 12px;
             --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark {
+            --primary-color: #4fa3e0;
+            --secondary-color: #2c3e50;
+            --text-color: #f0f2f5;
+            --background-color: #121212;
+            --card-background: #1e1e1e;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         * {
@@ -24,7 +35,7 @@
         
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
+            background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
@@ -32,16 +43,51 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 20px;
+            width: 50px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .theme-toggle-slider {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            transition: transform 0.3s;
+        }
+        
+        .dark .theme-toggle-slider {
+            transform: translateX(24px);
         }
         
         .card {
-            background-color: white;
+            background-color: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             width: 100%;
-            max-width: 500px;
             padding: 30px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.3s;
         }
         
         .business-name {
@@ -70,8 +116,12 @@
             background-color: #eef2f7;
         }
         
+        .dark .info-row:hover {
+            background-color: #3a506b;
+        }
+        
         .logo-container {
-            background-color: white;
+            background-color: var(--card-background);
             border-radius: 8px;
             padding: 10px;
             width: 70px;
@@ -154,7 +204,11 @@
         @media (max-width: 480px) {
             body {
                 align-items: flex-start;
-                padding-top: 40px;
+                padding-top: 60px;
+            }
+            
+            .theme-toggle {
+                top: -50px;
             }
             
             .card {
@@ -193,33 +247,62 @@
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="business-name" id="business-name">
-            Name of business
-        </div>
+    <div class="container">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-toggle-slider"></span>
+        </button>
         
-        <div class="info-row">
-            <div class="logo-container">
-                <img src="logo/bml_logo.png" alt="BML Logo" class="logo">
+        <div class="card">
+            <div class="business-name" id="business-name">
+                Name of business
             </div>
-            <div class="account-info" id="bml-account">BML Account Number</div>
-            <button class="copy-btn" onclick="copyToClipboard('bml-account')">Copy</button>
-        </div>
-        
-        <div class="info-row">
-            <div class="logo-container">
-                <img src="logo/viber_logo.png" alt="Viber Logo" class="logo">
+            
+            <div class="info-row">
+                <div class="logo-container">
+                    <img src="logo/bml_logo.png" alt="BML Logo" class="logo">
+                </div>
+                <div class="account-info" id="bml-account">BML Account Number</div>
+                <button class="copy-btn" onclick="copyToClipboard('bml-account')">Copy</button>
             </div>
-            <div class="account-info" id="viber-account">Viber Account Number</div>
-            <button class="copy-btn" onclick="copyToClipboard('viber-account')">Copy</button>
+            
+            <div class="info-row" id="mib-row" style="display: none;">
+                <div class="logo-container">
+                    <img src="logo/bml_logo.png" alt="MIB Logo" class="logo">
+                </div>
+                <div class="account-info" id="mib-account">MIB Account Number</div>
+                <button class="copy-btn" onclick="copyToClipboard('mib-account')">Copy</button>
+            </div>
+            
+            <div class="info-row">
+                <div class="logo-container">
+                    <img src="logo/viber_logo.png" alt="Viber Logo" class="logo">
+                </div>
+                <div class="account-info" id="viber-account">Viber Account Number</div>
+                <button class="copy-btn" onclick="copyToClipboard('viber-account')">Copy</button>
+            </div>
+            
+            <a href="index.html" class="back-link">Generate your own QR code</a>
         </div>
-        
-        <a href="index.html" class="back-link">Generate your own QR code</a>
     </div>
     
     <div class="toast" id="toast">Copied to clipboard!</div>
 
     <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlEl = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark');
+            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        });
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            htmlEl.classList.remove('dark');
+        }
+    
         // Function to get URL parameters
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -249,6 +332,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const businessName = getUrlParameter('business');
             const bmlAccount = getUrlParameter('bml');
+            const mibAccount = getUrlParameter('mib');
             const viberAccount = getUrlParameter('viber');
 
             // Update the HTML with the parameters if they exist
@@ -258,6 +342,10 @@
             }
             if (bmlAccount) {
                 document.getElementById('bml-account').innerText = bmlAccount;
+            }
+            if (mibAccount) {
+                document.getElementById('mib-account').innerText = mibAccount;
+                document.getElementById('mib-row').style.display = 'flex';
             }
             if (viberAccount) {
                 document.getElementById('viber-account').innerText = viberAccount;

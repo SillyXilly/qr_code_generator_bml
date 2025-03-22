@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +14,22 @@
             --secondary-color: #f8f9fa;
             --accent-color: #2ecc71;
             --text-color: #333;
+            --background-color: #f0f2f5;
+            --card-background: white;
+            --input-border: #ddd;
             --border-radius: 12px;
             --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark {
+            --primary-color: #4fa3e0;
+            --secondary-color: #2c3e50;
+            --accent-color: #2ecc71;
+            --text-color: #f0f2f5;
+            --background-color: #121212;
+            --card-background: #1e1e1e;
+            --input-border: #444;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         
         * {
@@ -26,11 +40,12 @@
         
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5;
+            background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
             padding: 40px 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
         
         .container {
@@ -39,6 +54,36 @@
             display: flex;
             flex-direction: column;
             gap: 30px;
+            position: relative;
+        }
+        
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--secondary-color);
+            border: none;
+            border-radius: 20px;
+            width: 50px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .theme-toggle-slider {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            transition: transform 0.3s;
+        }
+        
+        .dark .theme-toggle-slider {
+            transform: translateX(24px);
         }
         
         .section-title {
@@ -64,12 +109,12 @@
         }
         
         .card {
-            background-color: white;
+            background-color: var(--card-background);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             width: 100%;
             padding: 25px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.3s;
         }
         
         .generator-section {
@@ -90,9 +135,11 @@
             width: 100%;
             padding: 12px 15px;
             border-radius: var(--border-radius);
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border);
             font-size: 1rem;
             transition: border-color 0.3s;
+            background-color: var(--card-background);
+            color: var(--text-color);
         }
         
         .form-group input:focus {
@@ -158,7 +205,7 @@
             display: none;
             margin-top: 30px;
             padding-top: 30px;
-            border-top: 1px solid #ebebeb;
+            border-top: 1px solid var(--input-border);
         }
         
         #qrcode {
@@ -172,7 +219,8 @@
         .qr-info {
             text-align: center;
             margin-bottom: 15px;
-            color: #666;
+            color: var(--text-color);
+            opacity: 0.8;
         }
         
         .preview-link {
@@ -208,6 +256,10 @@
 </head>
 <body>
     <div class="container">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+            <span class="theme-toggle-slider"></span>
+        </button>
+        
         <h1 class="section-title">Business QR Generator</h1>
         
         <div class="card generator-section">
@@ -219,6 +271,11 @@
             <div class="form-group">
                 <label for="bml-input">BML Account Number</label>
                 <input type="text" id="bml-input" placeholder="Enter BML account number" />
+            </div>
+            
+            <div class="form-group">
+                <label for="mib-input">MIB Account Number</label>
+                <input type="text" id="mib-input" placeholder="Enter MIB account number" />
             </div>
             
             <div class="form-group">
@@ -240,6 +297,21 @@
     </div>
 
     <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlEl = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            htmlEl.classList.toggle('dark');
+            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        });
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            htmlEl.classList.remove('dark');
+        }
+        
         // QR code related functions
         let qrCode = null;
         let businessUrl = '';
@@ -247,10 +319,11 @@
         function generateQRCode() {
             const businessName = document.getElementById('business-input').value.trim();
             const bmlAccount = document.getElementById('bml-input').value.trim();
+            const mibAccount = document.getElementById('mib-input').value.trim();
             const viberAccount = document.getElementById('viber-input').value.trim();
             
             if (!businessName || !bmlAccount || !viberAccount) {
-                alert('Please fill in all fields');
+                alert('Please fill in all required fields (Business Name, BML Account, and Viber Account)');
                 return;
             }
             
@@ -259,7 +332,8 @@
             const currentUrl = new URL(window.location.href);
             const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.substring(0, currentUrl.pathname.lastIndexOf('/'))}/business.html`;
             const params = `?business=${encodeURIComponent(businessName)}&bml=${encodeURIComponent(bmlAccount)}&viber=${encodeURIComponent(viberAccount)}`;
-            businessUrl = baseUrl + params;
+            const mibParam = mibAccount ? `&mib=${encodeURIComponent(mibAccount)}` : '';
+            businessUrl = baseUrl + params + mibParam;
             
             // Update preview link
             document.getElementById('preview-link').href = businessUrl;
