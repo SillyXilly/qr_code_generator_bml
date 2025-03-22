@@ -43,6 +43,11 @@
 
         <!-- Generator Form Card -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-transform duration-300">
+            <!-- Error Message Area -->
+            <div id="error-message" class="hidden mb-4 p-4 text-white bg-red-500 rounded-lg">
+                <p class="font-medium"></p>
+            </div>
+
             <!-- Tabs -->
             <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
                 <ul class="flex flex-wrap -mb-px">
@@ -247,6 +252,10 @@
         let businessUrl = '';
         
         function generateQRCode() {
+            // Clear any previous error messages
+            const errorEl = document.getElementById('error-message');
+            errorEl.classList.add('hidden');
+            
             const businessName = document.getElementById('business-input').value.trim();
             const bmlAccount = document.getElementById('bml-input').value.trim();
             const mibAccount = document.getElementById('mib-input').value.trim();
@@ -258,12 +267,18 @@
             const qrColor = document.getElementById('color-select').value;
             
             if (!businessName || !viberAccount || ((!bmlAccount && !mibAccount))) {
-                alert('Please fill in all required fields (Business Name, Viber Account, and either BML or MIB Account)');
+                // Show error message in the UI
+                errorEl.querySelector('p').textContent = 'Please fill in all required fields (Business Name, Viber Account, and either BML or MIB Account)';
+                errorEl.classList.remove('hidden');
+                errorEl.scrollIntoView({ behavior: 'smooth' });
                 return;
             }
             
             if (!qrLetter) {
-                alert('Please enter a letter to be shown in the middle of the QR code');
+                // Show error message in the UI
+                errorEl.querySelector('p').textContent = 'Please enter a letter to be shown in the middle of the QR code';
+                errorEl.classList.remove('hidden');
+                errorEl.scrollIntoView({ behavior: 'smooth' });
                 return;
             }
             
