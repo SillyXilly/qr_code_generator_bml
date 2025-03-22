@@ -177,28 +177,15 @@
         </div>
         
         <!-- QR Code Result Card -->
-        <div id="qr-result" class="hidden flex-col items-center bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Your QR Code</h2>
+        <div id="qr-result" class="hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4 text-center">QR Code Generated</h2>
             
-            <!-- QR Code Container -->
-            <div class="text-center mb-4">
-                <!-- Business Name Header - Will be populated by JS -->
-                <h3 id="qr-business-name" class="text-lg font-bold mb-3"></h3>
-                
-                <!-- QR Code -->
-                <div id="qrcode" class="inline-block p-4 bg-white rounded-lg"></div>
-                
-                <!-- Message Below QR - Will be populated by JS -->
-                <p id="qr-message" class="mt-3 text-sm italic"></p>
-            </div>
+            <!-- QR Code Container - Hidden but used for generating the QR -->
+            <div id="qrcode" class="hidden"></div>
             
-            <div class="w-full flex flex-col space-y-3">
-                <a id="preview-link" href="#" target="_blank" class="w-full py-2 px-4 bg-accent hover:bg-accent/90 text-white font-medium rounded-lg text-center transition duration-300">
-                    Preview Account Information
-                </a>
-                <button id="download-btn" class="hidden w-full py-2 px-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition duration-300">
-                    Download QR Code
-                </button>
+            <div class="text-center">
+                <p class="mb-4">Your QR code will download automatically.</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">You can generate another QR code with different information by updating the form fields.</p>
             </div>
         </div>
     </div>
@@ -288,9 +275,6 @@
             const mibParam = mibAccount ? `&mib=${encodeURIComponent(mibAccount)}` : '';
             businessUrl = baseUrl + params + mibParam;
             
-            // Update preview link
-            document.getElementById('preview-link').href = businessUrl;
-            
             // Clear previous QR code
             document.getElementById('qrcode').innerHTML = '';
             
@@ -304,38 +288,36 @@
                 correctLevel: QRCode.CorrectLevel.H
             });
             
-            // Add letter in the middle of QR code
+            // Need a small delay for QR code to render before downloading
             setTimeout(() => {
                 const qrCanvas = document.querySelector('#qrcode canvas');
                 if (qrCanvas) {
                     const ctx = qrCanvas.getContext('2d');
-                    ctx.font = 'bold 40px Roboto';
-                    ctx.fillStyle = '#FFFFFF';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
                     
                     // Draw white circle background
                     ctx.beginPath();
                     ctx.arc(qrCanvas.width / 2, qrCanvas.height / 2, 24, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#FFFFFF';
                     ctx.fill();
                     
                     // Draw letter
+                    ctx.font = 'bold 40px Roboto';
                     ctx.fillStyle = qrColor;
-                    ctx.fillText(qrLetter, qrCanvas.width / 2, qrCanvas.height / 2 + 2); // +2 for vertical centering adjustment
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(qrLetter, qrCanvas.width / 2, qrCanvas.height / 2 + 2);
+                    
+                    // Automatically download the QR code
+                    downloadQRCode();
+                    
+                    // Show the confirmation message
+                    document.getElementById('qr-result').classList.remove('hidden');
+                    document.getElementById('qr-result').classList.add('flex', 'flex-col', 'items-center');
+                    
+                    // Scroll to the result message
+                    document.getElementById('qr-result').scrollIntoView({ behavior: 'smooth' });
                 }
-            }, 100);
-            
-            // Update business name and message in result section
-            document.getElementById('qr-business-name').textContent = businessName;
-            document.getElementById('qr-message').textContent = qrMessage;
-            
-            // Show QR code and download button
-            document.getElementById('qr-result').classList.remove('hidden');
-            document.getElementById('qr-result').classList.add('flex');
-            document.getElementById('download-btn').classList.remove('hidden');
-            
-            // Scroll to the QR code result
-            document.getElementById('qr-result').scrollIntoView({ behavior: 'smooth' });
+            }, 200); // Increased delay to ensure QR code is fully rendered
         }
         
         function downloadQRCode() {
@@ -386,7 +368,6 @@
         
         // Event listeners
         document.getElementById('generate-btn').addEventListener('click', generateQRCode);
-        document.getElementById('download-btn').addEventListener('click', downloadQRCode);
     </script>
 </body>
 </html> 
