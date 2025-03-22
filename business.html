@@ -33,10 +33,10 @@
             <div class="toggle-circle w-4 h-4 bg-primary rounded-full transition-transform duration-300 transform dark:translate-x-6"></div>
         </button>
 
-        <!-- Business Card -->
+        <!-- Account Card -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-transform duration-300">
-            <!-- Business Name Header -->
-            <div id="business-name" class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center mb-6 font-bold text-xl border-l-4 border-primary"></div>
+            <!-- Account Name Header -->
+            <div id="account-name" class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center mb-6 font-bold text-xl border-l-4 border-primary"></div>
             
             <!-- BML Account Info Row -->
             <div id="bml-container" class="mb-5 bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
@@ -114,17 +114,17 @@
         
         // Get URL parameters and populate information
         const urlParams = new URLSearchParams(window.location.search);
-        const businessName = urlParams.get('business');
+        const accountName = urlParams.get('account');
         const bmlAccount = urlParams.get('bml');
         const mibAccount = urlParams.get('mib');
         const viberAccount = urlParams.get('viber');
         
-        document.title = businessName ? `${businessName} - Information` : 'Account Information';
+        document.title = accountName ? `${accountName} - Information` : 'Account Information';
         
-        if (businessName) {
-            document.getElementById('business-name').innerText = businessName;
+        if (accountName) {
+            document.getElementById('account-name').innerText = accountName;
         } else {
-            document.getElementById('business-name').innerText = 'Unknown Account';
+            document.getElementById('account-name').innerText = 'Unknown Account';
         }
         
         if (bmlAccount) {

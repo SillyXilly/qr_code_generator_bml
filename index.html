@@ -68,11 +68,11 @@
             <div id="info-content" class="tab-content">
                 <h2 class="text-xl font-semibold mb-4">Enter Account Information</h2>
                 
-                <!-- Business Name -->
+                <!-- Account Name -->
                 <div class="mb-6">
-                    <label for="business-input" class="block mb-2 font-medium">Business / Account Name <span class="text-red-500">*</span></label>
+                    <label for="account-input" class="block mb-2 font-medium">Account Name (Put same name as in BML or MIB Account) <span class="text-red-500">*</span></label>
                     <div class="relative">
-                        <input id="business-input" type="text" 
+                        <input id="account-input" type="text" 
                                class="w-full p-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm">
                     </div>
                 </div>
@@ -256,7 +256,7 @@
             const errorEl = document.getElementById('error-message');
             errorEl.classList.add('hidden');
             
-            const businessName = document.getElementById('business-input').value.trim();
+            const accountName = document.getElementById('account-input').value.trim();
             const bmlAccount = document.getElementById('bml-input').value.trim();
             const mibAccount = document.getElementById('mib-input').value.trim();
             const viberAccount = document.getElementById('viber-input').value.trim();
@@ -266,9 +266,9 @@
             const qrMessage = document.getElementById('message-input').value.trim();
             const qrColor = document.getElementById('color-select').value;
             
-            if (!businessName || !viberAccount || ((!bmlAccount && !mibAccount))) {
+            if (!accountName || !viberAccount || ((!bmlAccount && !mibAccount))) {
                 // Show error message in the UI
-                errorEl.querySelector('p').textContent = 'Please fill in all required fields (Business Name, Viber Account, and either BML or MIB Account)';
+                errorEl.querySelector('p').textContent = 'Please fill in all required fields (Account Name, Viber Account, and either BML or MIB Account)';
                 errorEl.classList.remove('hidden');
                 errorEl.scrollIntoView({ behavior: 'smooth' });
                 return;
@@ -278,7 +278,7 @@
             // Get base URL dynamically
             const currentUrl = new URL(window.location.href);
             const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.substring(0, currentUrl.pathname.lastIndexOf('/'))}/business.html`;
-            const params = `?business=${encodeURIComponent(businessName)}&bml=${encodeURIComponent(bmlAccount)}&viber=${encodeURIComponent(viberAccount)}`;
+            const params = `?account=${encodeURIComponent(accountName)}&bml=${encodeURIComponent(bmlAccount)}&viber=${encodeURIComponent(viberAccount)}`;
             const mibParam = mibAccount ? `&mib=${encodeURIComponent(mibAccount)}` : '';
             businessUrl = baseUrl + params + mibParam;
             
@@ -328,13 +328,13 @@
         }
         
         function downloadQRCode() {
-            const businessName = document.getElementById('business-input').value.trim();
+            const accountName = document.getElementById('account-input').value.trim();
             const qrMessage = document.getElementById('message-input').value.trim();
             const canvas = document.querySelector('#qrcode canvas');
             
             if (!canvas) return;
             
-            // Create a new canvas to include the business name and message
+            // Create a new canvas to include the account name and message
             const downloadCanvas = document.createElement('canvas');
             const padding = 40; // Padding for top and bottom
             
@@ -347,12 +347,12 @@
             ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, downloadCanvas.width, downloadCanvas.height);
             
-            // Add business name on top
+            // Add account name on top
             ctx.font = 'bold 16px Roboto';
             ctx.fillStyle = '#000000';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
-            ctx.fillText(businessName, downloadCanvas.width / 2, 15);
+            ctx.fillText(accountName, downloadCanvas.width / 2, 15);
             
             // Draw QR code in the middle
             ctx.drawImage(canvas, 30, padding);
@@ -368,7 +368,7 @@
             
             // Create download link
             const link = document.createElement('a');
-            link.download = businessName.replace(/\s+/g, '_').toLowerCase() + '_qr_code.png';
+            link.download = accountName.replace(/\s+/g, '_').toLowerCase() + '_qr_code.png';
             link.href = downloadCanvas.toDataURL('image/png');
             link.click();
         }
