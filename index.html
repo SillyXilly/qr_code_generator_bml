@@ -255,7 +255,9 @@
             }
             
             // Build URL for QR code
-            const baseUrl = window.location.href.split('/').slice(0, -1).join('/') + '/business.html';
+            // Get base URL dynamically
+            const currentUrl = new URL(window.location.href);
+            const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.substring(0, currentUrl.pathname.lastIndexOf('/'))}/business.html`;
             const params = `?business=${encodeURIComponent(businessName)}&bml=${encodeURIComponent(bmlAccount)}&viber=${encodeURIComponent(viberAccount)}`;
             businessUrl = baseUrl + params;
             
