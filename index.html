@@ -111,7 +111,7 @@
                 
                 <!-- Letter in Middle -->
                 <div class="mb-6">
-                    <label for="letter-input" class="block mb-2 font-medium">Letter (shown in middle) <span class="text-red-500">*</span></label>
+                    <label for="letter-input" class="block mb-2 font-medium">Letter (shown in middle) </label>
                     <div class="relative">
                         <input id="letter-input" type="text" maxlength="1" 
                                class="w-full p-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm">
@@ -272,15 +272,7 @@
                 errorEl.classList.remove('hidden');
                 errorEl.scrollIntoView({ behavior: 'smooth' });
                 return;
-            }
-            
-            if (!qrLetter) {
-                // Show error message in the UI
-                errorEl.querySelector('p').textContent = 'Please enter a letter to be shown in the middle of the QR code';
-                errorEl.classList.remove('hidden');
-                errorEl.scrollIntoView({ behavior: 'smooth' });
-                return;
-            }
+            }            
             
             // Build URL for QR code
             // Get base URL dynamically
