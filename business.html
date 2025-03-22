@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Information</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #f8f9fa;
+            --text-color: #333;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+        
+        .business-name {
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .info-row:hover {
+            background-color: #eef2f7;
+        }
+        
+        .logo-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+        
+        .logo {
+            max-width: 50px;
+            max-height: 50px;
+        }
+        
+        .account-info {
+            flex-grow: 1;
+            font-size: 1rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+        
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+        
+        .copy-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .copy-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .business-name {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            
+            .info-row {
+                padding: 12px;
+            }
+            
+            .logo-container {
+                width: 60px;
+                height: 60px;
+                margin-right: 12px;
+            }
+            
+            .logo {
+                max-width: 40px;
+                max-height: 40px;
+            }
+            
+            .account-info {
+                font-size: 0.9rem;
+            }
+            
+            .copy-btn {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="business-name" id="business-name">
+            Name of business
+        </div>
+        
+        <div class="info-row">
+            <div class="logo-container">
+                <img src="logo/bml_logo.png" alt="BML Logo" class="logo">
+            </div>
+            <div class="account-info" id="bml-account">BML Account Number</div>
+            <button class="copy-btn" onclick="copyToClipboard('bml-account')">Copy</button>
+        </div>
+        
+        <div class="info-row">
+            <div class="logo-container">
+                <img src="logo/viber_logo.png" alt="Viber Logo" class="logo">
+            </div>
+            <div class="account-info" id="viber-account">Viber Account Number</div>
+            <button class="copy-btn" onclick="copyToClipboard('viber-account')">Copy</button>
+        </div>
+        
+        <a href="index.html" class="back-link">Generate your own QR code</a>
+    </div>
+    
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Function to copy text to clipboard with toast notification
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    // Show toast notification
+                    const toast = document.getElementById('toast');
+                    toast.className = "toast show";
+                    setTimeout(() => {
+                        toast.className = toast.className.replace("show", "");
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                });
+        }
+
+        // Check for URL parameters when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const businessName = getUrlParameter('business');
+            const bmlAccount = getUrlParameter('bml');
+            const viberAccount = getUrlParameter('viber');
+
+            // Update the HTML with the parameters if they exist
+            if (businessName) {
+                document.getElementById('business-name').innerText = businessName;
+                document.title = businessName;
+            }
+            if (bmlAccount) {
+                document.getElementById('bml-account').innerText = bmlAccount;
+            }
+            if (viberAccount) {
+                document.getElementById('viber-account').innerText = viberAccount;
+            }
+        });
+    </script>
+</body>
+</html> 
