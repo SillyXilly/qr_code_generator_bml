@@ -108,6 +108,15 @@
             <!-- Customize Tab Content -->
             <div id="customize-content" class="tab-content hidden">
                 <h2 class="text-xl font-semibold mb-4">Customize QR Code</h2>
+
+                <!-- Business Name -->
+                <div class="mb-6">
+                    <label for="business-input" class="block mb-2 font-medium">Business Name <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input id="business-input" type="text" 
+                               class="w-full p-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm">
+                    </div>
+                </div>
                 
                 <!-- Letter in Middle -->
                 <div class="mb-6">
@@ -262,11 +271,12 @@
             const viberAccount = document.getElementById('viber-input').value.trim();
             
             // Get customization values
+            const businessName = document.getElementById('business-input').value.trim();
             const qrLetter = document.getElementById('letter-input').value.trim().toUpperCase();
             const qrMessage = document.getElementById('message-input').value.trim();
             const qrColor = document.getElementById('color-select').value;
             
-            if (!accountName || !viberAccount || ((!bmlAccount && !mibAccount))) {
+            if (!accountName || !viberAccount || ((!bmlAccount && !mibAccount)) || !businessName) {
                 // Show error message in the UI
                 errorEl.querySelector('p').textContent = 'Please fill in all required fields (Account Name, Viber Account, and either BML or MIB Account)';
                 errorEl.classList.remove('hidden');
@@ -288,8 +298,8 @@
             // Create new QR code with custom color
             qrCode = new QRCode(document.getElementById('qrcode'), {
                 text: businessUrl,
-                width: 200,
-                height: 200,
+                width: 400,
+                height: 400,
                 colorDark: qrColor,
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
@@ -327,7 +337,7 @@
         }
         
         function downloadQRCode() {
-            const accountName = document.getElementById('account-input').value.trim();
+            const businessName = document.getElementById('business-input').value.trim();
             const qrMessage = document.getElementById('message-input').value.trim();
             const canvas = document.querySelector('#qrcode canvas');
             
@@ -347,11 +357,11 @@
             ctx.fillRect(0, 0, downloadCanvas.width, downloadCanvas.height);
             
             // Add account name on top
-            ctx.font = 'bold 16px Roboto';
+            ctx.font = 'bold 30px Roboto';
             ctx.fillStyle = '#000000';
             ctx.textAlign = 'center';
-            ctx.textBaseline = 'top';
-            ctx.fillText(accountName, downloadCanvas.width / 2, 15);
+            ctx.textBaseline = 'top';            
+            ctx.fillText(businessName, downloadCanvas.width / 2, 15);
             
             // Draw QR code in the middle
             ctx.drawImage(canvas, 30, padding);
@@ -367,7 +377,7 @@
             
             // Create download link
             const link = document.createElement('a');
-            link.download = accountName.replace(/\s+/g, '_').toLowerCase() + '_qr_code.png';
+            link.download = businessName.replace(/\s+/g, '_').toLowerCase() + '_qr_code.png';
             link.href = downloadCanvas.toDataURL('image/png');
             link.click();
 
