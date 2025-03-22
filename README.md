@@ -11,6 +11,7 @@ This is a simple web-based QR code generator that creates QR codes linking to a 
 - Responsive design that works on mobile and desktop
 - Instant QR code preview and download
 - All processing happens client-side with JavaScript
+- Modern UI built with Tailwind CSS
 
 ## Usage
 
@@ -41,9 +42,11 @@ You can:
 
 ## Customizing
 
-You can customize the appearance by modifying the CSS in the HTML files:
+You can customize the appearance by modifying the Tailwind classes in the HTML files:
 - `index.html` - The QR code generator page
 - `business.html` - The business information display page
+
+The project uses Tailwind CSS via CDN for styling, making it easy to modify the appearance by simply changing the utility classes in the HTML.
 
 ## Files
 

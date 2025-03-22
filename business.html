@@ -7,366 +7,180 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #f8f9fa;
-            --text-color: #333;
-            --background-color: #f0f2f5;
-            --card-background: white;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .dark {
-            --primary-color: #4fa3e0;
-            --secondary-color: #2c3e50;
-            --text-color: #f0f2f5;
-            --background-color: #121212;
-            --card-background: #1e1e1e;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        .container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-        }
-        
-        .theme-toggle {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: var(--secondary-color);
-            border: none;
-            border-radius: 20px;
-            width: 50px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            z-index: 10;
-        }
-        
-        html.dark .theme-toggle {
-            justify-content: flex-end;
-        }
-        
-        .theme-toggle-slider {
-            position: relative;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            transition: transform 0.3s;
-        }
-        
-        .card {
-            background-color: var(--card-background);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            width: 100%;
-            padding: 30px;
-            transition: transform 0.3s ease, background-color 0.3s;
-        }
-        
-        .business-name {
-            background-color: var(--secondary-color);
-            border-radius: var(--border-radius);
-            padding: 18px;
-            text-align: center;
-            margin-bottom: 30px;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--text-color);
-            border-left: 5px solid var(--primary-color);
-        }
-        
-        .info-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            background-color: var(--secondary-color);
-            border-radius: var(--border-radius);
-            padding: 15px;
-            transition: background-color 0.2s ease;
-        }
-        
-        .info-row:hover {
-            background-color: #eef2f7;
-        }
-        
-        .dark .info-row:hover {
-            background-color: #3a506b;
-        }
-        
-        .logo-container {
-            background-color: var(--card-background);
-            border-radius: 8px;
-            padding: 10px;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            flex-shrink: 0;
-        }
-        
-        .logo {
-            max-width: 50px;
-            max-height: 50px;
-        }
-        
-        .account-info {
-            flex-grow: 1;
-            font-size: 1rem;
-            font-weight: 500;
-            word-break: break-word;
-        }
-        
-        .copy-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            margin-left: 10px;
-            white-space: nowrap;
-        }
-        
-        .copy-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .copy-btn:active {
-            transform: scale(0.97);
-        }
-        
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-            pointer-events: none;
-        }
-        
-        .toast.show {
-            opacity: 1;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            text-align: center;
-            width: 100%;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .back-link:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                align-items: flex-start;
-                padding-top: 60px;
-            }
-            
-            .theme-toggle {
-                top: -50px;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .business-name {
-                font-size: 1.2rem;
-                padding: 15px;
-            }
-            
-            .info-row {
-                padding: 12px;
-            }
-            
-            .logo-container {
-                width: 60px;
-                height: 60px;
-                margin-right: 12px;
-            }
-            
-            .logo {
-                max-width: 40px;
-                max-height: 40px;
-            }
-            
-            .account-info {
-                font-size: 0.9rem;
-            }
-            
-            .copy-btn {
-                padding: 6px 12px;
-                font-size: 0.9rem;
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#f8f9fa',
+                    },
+                },
+                fontFamily: {
+                    'sans': ['Roboto', 'sans-serif'],
+                }
             }
         }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-            <span class="theme-toggle-slider"></span>
+<body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 min-h-screen flex justify-center items-center p-6 font-sans transition-colors duration-300">
+    <div class="relative w-full max-w-md">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="absolute -top-10 right-0 w-12 h-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300">
+            <div class="toggle-circle w-4 h-4 bg-primary rounded-full transition-transform duration-300 transform dark:translate-x-6"></div>
         </button>
-        
-        <div class="card">
-            <div class="business-name" id="business-name">
-                Name of business
-            </div>
+
+        <!-- Business Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-transform duration-300">
+            <!-- Business Name Header -->
+            <div id="business-name" class="bg-gray-100 dark:bg-gray-700 rounded-lg p-4 text-center mb-6 font-bold text-xl border-l-4 border-primary"></div>
             
-            <div class="info-row">
-                <div class="logo-container">
-                    <img src="logo/bml_logo.png" alt="BML Logo" class="logo">
+            <!-- BML Account Info Row -->
+            <div id="bml-container" class="mb-5 bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 w-16 h-16 flex justify-center items-center mr-4 shadow">
+                    <img src="logo/bml_logo.png" alt="BML Logo" class="max-w-10 max-h-10 object-contain">
                 </div>
-                <div class="account-info" id="bml-account">BML Account Number</div>
-                <button class="copy-btn" onclick="copyToClipboard('bml-account')">Copy</button>
+                <div class="flex-grow text-base font-medium break-words" id="bml-account"></div>
+                <button onclick="copyToClipboard('bml-account')" class="ml-3 p-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </button>
             </div>
             
-            <div class="info-row" id="mib-row" style="display: none;">
-                <div class="logo-container">
-                    <img src="logo/mib_logo.png" alt="MIB Logo" class="logo">
+            <!-- MIB Account Info Row -->
+            <div id="mib-container" class="mb-5 bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 w-16 h-16 flex justify-center items-center mr-4 shadow">
+                    <img src="logo/mib_logo.png" alt="MIB Logo" class="max-w-10 max-h-10 object-contain">
                 </div>
-                <div class="account-info" id="mib-account">MIB Account Number</div>
-                <button class="copy-btn" onclick="copyToClipboard('mib-account')">Copy</button>
+                <div class="flex-grow text-base font-medium break-words" id="mib-account"></div>
+                <button onclick="copyToClipboard('mib-account')" class="ml-3 p-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </button>
             </div>
             
-            <div class="info-row">
-                <div class="logo-container">
-                    <img src="logo/viber_logo.png" alt="Viber Logo" class="logo">
+            <!-- Viber Account Info Row -->
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 w-16 h-16 flex justify-center items-center mr-4 shadow">
+                    <img src="logo/viber_logo.png" alt="Viber Logo" class="max-w-10 max-h-10 object-contain">
                 </div>
-                <div class="account-info" id="viber-account">Viber Account Number</div>
-                <button class="copy-btn" onclick="copyToClipboard('viber-account')">Copy</button>
+                <div class="flex-grow text-base font-medium break-words" id="viber-account"></div>
+                <button onclick="copyToClipboard('viber-account')" class="ml-3 p-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                </button>
             </div>
             
-            <a href="index.html" class="back-link">Generate your own QR code</a>
+            <!-- Copy Success Message -->
+            <div id="copy-message" class="fixed left-1/2 -translate-x-1/2 bottom-4 bg-green-500 text-white px-4 py-2 rounded-lg opacity-0 transition-opacity duration-300 shadow-lg">
+                Copied to clipboard!
+            </div>
         </div>
     </div>
-    
-    <div class="toast" id="toast">Copied to clipboard!</div>
 
     <script>
-        // Dark mode toggle
+        // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
-        const htmlEl = document.documentElement;
         
-        themeToggle.addEventListener('click', function() {
-            if (htmlEl.classList.contains('dark')) {
-                htmlEl.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                htmlEl.classList.add('dark');
+        function setTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
             }
+        }
+        
+        // Check for saved theme preference or system preference
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setTheme(!isDark);
         });
         
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            if (savedTheme === 'light') {
-                htmlEl.classList.remove('dark');
-            } else {
-                htmlEl.classList.add('dark');
-            }
+        // Get URL parameters and populate information
+        const urlParams = new URLSearchParams(window.location.search);
+        const businessName = urlParams.get('business');
+        const bmlAccount = urlParams.get('bml');
+        const mibAccount = urlParams.get('mib');
+        const viberAccount = urlParams.get('viber');
+        
+        document.title = businessName ? `${businessName} - Information` : 'Business Information';
+        
+        if (businessName) {
+            document.getElementById('business-name').innerText = businessName;
         } else {
-            // If no preference saved, check system preference
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                htmlEl.classList.remove('dark');
-            }
+            document.getElementById('business-name').innerText = 'Unknown Business';
         }
-    
-        // Function to get URL parameters
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        
+        if (bmlAccount) {
+            document.getElementById('bml-account').innerText = bmlAccount;
+        } else {
+            document.getElementById('bml-container').style.display = 'none';
         }
-
-        // Function to copy text to clipboard with toast notification
+        
+        if (mibAccount) {
+            document.getElementById('mib-account').innerText = mibAccount;
+        } else {
+            document.getElementById('mib-container').style.display = 'none';
+        }
+        
+        if (viberAccount) {
+            document.getElementById('viber-account').innerText = viberAccount;
+        }
+        
+        // Copy to clipboard functionality
         function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text)
-                .then(() => {
-                    // Show toast notification
-                    const toast = document.getElementById('toast');
-                    toast.className = "toast show";
-                    setTimeout(() => {
-                        toast.className = toast.className.replace("show", "");
-                    }, 2000);
-                })
-                .catch(err => {
-                    console.error('Failed to copy text: ', err);
-                });
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const textToCopy = element.innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showCopyMessage();
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+                
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                textarea.style.position = 'fixed';
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    showCopyMessage();
+                } catch (err) {
+                    console.error('Fallback: Could not copy text: ', err);
+                }
+                
+                document.body.removeChild(textarea);
+            });
         }
-
-        // Check for URL parameters when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            const businessName = getUrlParameter('business');
-            const bmlAccount = getUrlParameter('bml');
-            const mibAccount = getUrlParameter('mib');
-            const viberAccount = getUrlParameter('viber');
-
-            // Update the HTML with the parameters if they exist
-            if (businessName) {
-                document.getElementById('business-name').innerText = businessName;
-                document.title = businessName;
-            }
-            if (bmlAccount) {
-                document.getElementById('bml-account').innerText = bmlAccount;
-            }
-            if (mibAccount) {
-                document.getElementById('mib-account').innerText = mibAccount;
-                document.getElementById('mib-row').style.display = 'flex';
-            }
-            if (viberAccount) {
-                document.getElementById('viber-account').innerText = viberAccount;
-            }
-        });
+        
+        function showCopyMessage() {
+            const message = document.getElementById('copy-message');
+            message.style.opacity = '1';
+            
+            setTimeout(() => {
+                message.style.opacity = '0';
+            }, 2000);
+        }
     </script>
 </body>
 </html> 

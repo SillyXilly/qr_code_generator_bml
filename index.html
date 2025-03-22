@@ -8,325 +8,123 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #f8f9fa;
-            --accent-color: #2ecc71;
-            --text-color: #333;
-            --background-color: #f0f2f5;
-            --card-background: white;
-            --input-border: #ddd;
-            --border-radius: 12px;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .dark {
-            --primary-color: #4fa3e0;
-            --secondary-color: #2c3e50;
-            --accent-color: #2ecc71;
-            --text-color: #f0f2f5;
-            --background-color: #121212;
-            --card-background: #1e1e1e;
-            --input-border: #444;
-            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 40px 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            position: relative;
-        }
-        
-        .theme-toggle {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--secondary-color);
-            border: none;
-            border-radius: 20px;
-            width: 50px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            z-index: 10;
-        }
-        
-        html.dark .theme-toggle {
-            justify-content: flex-end;
-        }
-        
-        .theme-toggle-slider {
-            position: relative;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            transition: transform 0.3s;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background-color: var(--primary-color);
-            border-radius: 2px;
-        }
-        
-        .card {
-            background-color: var(--card-background);
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            width: 100%;
-            padding: 25px;
-            transition: transform 0.3s ease, background-color 0.3s;
-        }
-        
-        .generator-section {
-            margin-bottom: 20px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--input-border);
-            font-size: 1rem;
-            transition: border-color 0.3s;
-            background-color: var(--card-background);
-            color: var(--text-color);
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-        }
-        
-        .button-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-        }
-        
-        .primary-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            flex-grow: 1;
-            text-align: center;
-            font-size: 1rem;
-        }
-        
-        .primary-btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .primary-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .secondary-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            flex-grow: 1;
-            text-align: center;
-            font-size: 1rem;
-        }
-        
-        .secondary-btn:hover {
-            background-color: #27ae60;
-        }
-        
-        .secondary-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .qr-result {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            display: none;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid var(--input-border);
-        }
-        
-        #qrcode {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-        }
-        
-        .qr-info {
-            text-align: center;
-            margin-bottom: 15px;
-            color: var(--text-color);
-            opacity: 0.8;
-        }
-        
-        .preview-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .preview-link:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 20px 15px;
-            }
-            
-            .card {
-                padding: 15px;
-            }
-            
-            .button-row {
-                flex-direction: column;
-            }
-            
-            .primary-btn, .secondary-btn {
-                width: 100%;
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3498db',
+                        secondary: '#f8f9fa',
+                        accent: '#2ecc71',
+                    },
+                },
+                fontFamily: {
+                    'sans': ['Roboto', 'sans-serif'],
+                }
             }
         }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-            <span class="theme-toggle-slider"></span>
+<body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 min-h-screen p-6 font-sans transition-colors duration-300">
+    <div class="max-w-xl mx-auto flex flex-col gap-8 relative">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="absolute top-0 right-0 w-12 h-6 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300">
+            <div class="toggle-circle w-4 h-4 bg-primary rounded-full transition-transform duration-300 transform dark:translate-x-6"></div>
         </button>
-        
-        <h1 class="section-title">Business QR Generator</h1>
-        
-        <div class="card generator-section">
-            <div class="form-group">
-                <label for="business-input">Business Name</label>
-                <input type="text" id="business-input" placeholder="Enter business name" />
+
+        <!-- Main Title -->
+        <h1 class="text-3xl font-bold text-center text-primary relative pb-4 mt-8">
+            Business QR Code Generator
+            <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-primary rounded"></span>
+        </h1>
+
+        <!-- Generator Form Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 transition-transform duration-300">
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold mb-4">Enter Business Information</h2>
+                
+                <!-- Business Name -->
+                <div class="mb-4">
+                    <label for="business-input" class="block mb-2 font-medium">Business Name <span class="text-red-500">*</span></label>
+                    <input id="business-input" type="text" placeholder="Enter business name" 
+                           class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                </div>
+                
+                <!-- BML Account -->
+                <div class="mb-4">
+                    <label for="bml-input" class="block mb-2 font-medium">BML Account Number <span class="text-yellow-500">*</span></label>
+                    <input id="bml-input" type="text" placeholder="Enter BML account number" 
+                           class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                </div>
+                
+                <!-- MIB Account -->
+                <div class="mb-4">
+                    <label for="mib-input" class="block mb-2 font-medium">MIB Account Number <span class="text-yellow-500">*</span></label>
+                    <input id="mib-input" type="text" placeholder="Enter MIB account number" 
+                           class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">* Either BML or MIB account number is required</p>
+                
+                <!-- Viber Account -->
+                <div class="mb-6">
+                    <label for="viber-input" class="block mb-2 font-medium">Viber Account Number <span class="text-red-500">*</span></label>
+                    <input id="viber-input" type="text" placeholder="Enter Viber number" 
+                           class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 focus:border-primary focus:ring focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                </div>
+                
+                <!-- Generate Button -->
+                <button id="generate-btn" class="w-full py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition duration-300 focus:outline-none focus:ring focus:ring-primary/30">
+                    Generate QR Code
+                </button>
             </div>
+        </div>
+
+        <!-- QR Code Result Card -->
+        <div id="qr-result" class="hidden flex-col items-center bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Your QR Code</h2>
+            <div id="qrcode" class="mb-4 p-4 bg-white rounded-lg"></div>
             
-            <div class="form-group">
-                <label for="bml-input">BML Account Number</label>
-                <input type="text" id="bml-input" placeholder="Enter BML account number" />
-            </div>
-            
-            <div class="form-group">
-                <label for="mib-input">MIB Account Number</label>
-                <input type="text" id="mib-input" placeholder="Enter MIB account number" />
-            </div>
-            
-            <div class="form-group">
-                <label for="viber-input">Viber Account Number</label>
-                <input type="text" id="viber-input" placeholder="Enter Viber account number" />
-            </div>
-            
-            <div class="button-row">
-                <button class="primary-btn" id="generate-btn">Generate QR Code</button>
-                <button class="secondary-btn" id="download-btn" style="display:none">Download QR Code</button>
-            </div>
-            
-            <div class="qr-result" id="qr-result">
-                <p class="qr-info">Scan this QR code to view business information</p>
-                <div id="qrcode"></div>
-                <a id="preview-link" href="#" class="preview-link" target="_blank">Preview business page</a>
+            <div class="w-full flex flex-col space-y-3">
+                <a id="preview-link" href="#" target="_blank" class="w-full py-2 px-4 bg-accent hover:bg-accent/90 text-white font-medium rounded-lg text-center transition duration-300">
+                    Preview Business Page
+                </a>
+                <button id="download-btn" class="hidden w-full py-2 px-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition duration-300">
+                    Download QR Code
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Dark mode toggle
+        // Theme toggle functionality
         const themeToggle = document.getElementById('theme-toggle');
-        const htmlEl = document.documentElement;
         
-        themeToggle.addEventListener('click', function() {
-            if (htmlEl.classList.contains('dark')) {
-                htmlEl.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                htmlEl.classList.add('dark');
+        function setTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Check for saved theme preference or use system preference
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            if (savedTheme === 'light') {
-                htmlEl.classList.remove('dark');
             } else {
-                htmlEl.classList.add('dark');
-            }
-        } else {
-            // If no preference saved, check system preference
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                htmlEl.classList.remove('dark');
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
             }
         }
+        
+        // Check for saved theme preference or system preference
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setTheme(!isDark);
+        });
         
         // QR code related functions
         let qrCode = null;
@@ -368,8 +166,9 @@
             });
             
             // Show QR code and download button
-            document.getElementById('qr-result').style.display = 'flex';
-            document.getElementById('download-btn').style.display = 'block';
+            document.getElementById('qr-result').classList.remove('hidden');
+            document.getElementById('qr-result').classList.add('flex');
+            document.getElementById('download-btn').classList.remove('hidden');
         }
         
         function downloadQRCode() {
