@@ -63,9 +63,15 @@
             height: 24px;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             padding: 0 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            z-index: 10;
+        }
+        
+        html.dark .theme-toggle {
+            justify-content: flex-end;
         }
         
         .theme-toggle-slider {
@@ -75,10 +81,6 @@
             border-radius: 50%;
             background-color: var(--primary-color);
             transition: transform 0.3s;
-        }
-        
-        .dark .theme-toggle-slider {
-            transform: translateX(24px);
         }
         
         .card {
@@ -292,15 +294,29 @@
         const themeToggle = document.getElementById('theme-toggle');
         const htmlEl = document.documentElement;
         
-        themeToggle.addEventListener('click', () => {
-            htmlEl.classList.toggle('dark');
-            localStorage.setItem('theme', htmlEl.classList.contains('dark') ? 'dark' : 'light');
+        themeToggle.addEventListener('click', function() {
+            if (htmlEl.classList.contains('dark')) {
+                htmlEl.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlEl.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
         });
         
-        // Check for saved theme preference
+        // Check for saved theme preference or use system preference
         const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            htmlEl.classList.remove('dark');
+        if (savedTheme) {
+            if (savedTheme === 'light') {
+                htmlEl.classList.remove('dark');
+            } else {
+                htmlEl.classList.add('dark');
+            }
+        } else {
+            // If no preference saved, check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                htmlEl.classList.remove('dark');
+            }
         }
     
         // Function to get URL parameters
