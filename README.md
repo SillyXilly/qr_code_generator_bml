@@ -1,23 +1,24 @@
-# QR Code Generator for Business Information
+# QR Code Generator
 
-This is a simple web-based QR code generator that creates QR codes linking to a business information page. The business information page displays the business name, BML account number, MIB account number (optional), and Viber contact number.
+This is a simple web-based QR code generator that creates QR codes linking to an account information page. The information page displays the account name, BML account number, MIB account number (optional), and Viber contact number.
 
 ## Features
 
 - Generate QR codes directly in the browser - no server required
-- QR codes link to a business information page with copy buttons
+- QR codes link to an account information page with copy buttons
 - Support for BML, MIB, and Viber account information
 - Dark/light mode toggle for better user experience
 - Responsive design that works on mobile and desktop
 - Instant QR code preview and download
 - All processing happens client-side with JavaScript
 - Modern UI built with Tailwind CSS
+- Auto-scroll to generated QR code
 
 ## Usage
 
 1. Simply open `index.html` in a web browser
-2. Fill in the business information:
-   - Business Name (required)
+2. Fill in the information:
+   - Business / Account Name (required)
    - BML Account Number (required if MIB not provided)
    - MIB Account Number (required if BML not provided)
    - Viber Account Number (required)
@@ -27,9 +28,9 @@ This is a simple web-based QR code generator that creates QR codes linking to a 
 
 ## How It Works
 
-1. The QR code contains a URL to the `business.html` page with business information encoded as URL parameters
-2. When scanned, the QR code opens a web browser to display the business information
-3. The business page displays all the information with copy buttons for easy sharing
+1. The QR code contains a URL to the `business.html` page with account information encoded as URL parameters
+2. When scanned, the QR code opens a web browser to display the account information
+3. The information page displays all the details with copy buttons for easy sharing
 4. The page is styled with a responsive design and features dark/light mode toggle
 
 ## Hosting
