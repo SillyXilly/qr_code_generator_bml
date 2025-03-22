@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Information</title>
+    <title>Business Information QR Generator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <style>
         :root {
             --primary-color: #3498db;
             --secondary-color: #f8f9fa;
+            --accent-color: #2ecc71;
             --text-color: #333;
             --border-radius: 12px;
             --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -27,11 +29,38 @@
             background-color: #f0f2f5;
             color: var(--text-color);
             line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
         }
         
         .card {
@@ -39,15 +68,107 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             width: 100%;
-            max-width: 500px;
             padding: 25px;
             transition: transform 0.3s ease;
         }
         
-        @media (hover: hover) {
-            .card:hover {
-                transform: translateY(-5px);
-            }
+        .generator-section {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .primary-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .primary-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .secondary-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .secondary-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .secondary-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .qr-result {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            display: none;
+            margin-top: 20px;
+        }
+        
+        #qrcode {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .preview-section {
+            margin-top: 20px;
         }
         
         .business-name {
@@ -78,7 +199,7 @@
         
         .logo-container {
             background-color: white;
-            border-radius: 50%;
+            border-radius: 8px;
             padding: 10px;
             width: 70px;
             height: 70px;
@@ -143,7 +264,30 @@
             opacity: 1;
         }
         
+        .divider {
+            height: 2px;
+            background-color: #ebebeb;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: "Preview";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 0 15px;
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
         @media (max-width: 480px) {
+            body {
+                padding: 20px 15px;
+            }
+            
             .card {
                 padding: 15px;
             }
@@ -176,29 +320,70 @@
                 padding: 6px 12px;
                 font-size: 0.9rem;
             }
+            
+            .button-row {
+                flex-direction: column;
+            }
+            
+            .primary-btn, .secondary-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="business-name" id="business-name">
-            Name of business
+    <div class="container">
+        <h1 class="section-title">Business QR Generator</h1>
+        
+        <div class="card generator-section">
+            <div class="form-group">
+                <label for="business-input">Business Name</label>
+                <input type="text" id="business-input" placeholder="Enter business name" />
+            </div>
+            
+            <div class="form-group">
+                <label for="bml-input">BML Account Number</label>
+                <input type="text" id="bml-input" placeholder="Enter BML account number" />
+            </div>
+            
+            <div class="form-group">
+                <label for="viber-input">Viber Account Number</label>
+                <input type="text" id="viber-input" placeholder="Enter Viber account number" />
+            </div>
+            
+            <div class="button-row">
+                <button class="primary-btn" id="generate-btn">Generate QR Code</button>
+                <button class="secondary-btn" id="download-btn" style="display:none">Download QR Code</button>
+            </div>
+            
+            <div class="qr-result" id="qr-result">
+                <div id="qrcode"></div>
+                <p>Scan this QR code to view business information</p>
+            </div>
         </div>
         
-        <div class="info-row">
-            <div class="logo-container">
-                <img src="logo/bml_logo.png" alt="BML Logo" class="logo">
+        <div class="card preview-section">
+            <div class="divider"></div>
+            
+            <div class="business-name" id="business-name-preview">
+                Name of business
             </div>
-            <div class="account-info" id="bml-account">BML Account Number</div>
-            <button class="copy-btn" onclick="copyToClipboard('bml-account')">Copy</button>
-        </div>
-        
-        <div class="info-row">
-            <div class="logo-container">
-                <img src="logo/viber_logo.png" alt="Viber Logo" class="logo">
+            
+            <div class="info-row">
+                <div class="logo-container">
+                    <img src="logo/bml_logo.png" alt="BML Logo" class="logo">
+                </div>
+                <div class="account-info" id="bml-account-preview">BML Account Number</div>
+                <button class="copy-btn" onclick="copyToClipboard('bml-account-preview')">Copy</button>
             </div>
-            <div class="account-info" id="viber-account">Viber Account Number</div>
-            <button class="copy-btn" onclick="copyToClipboard('viber-account')">Copy</button>
+            
+            <div class="info-row">
+                <div class="logo-container">
+                    <img src="logo/viber_logo.png" alt="Viber Logo" class="logo">
+                </div>
+                <div class="account-info" id="viber-account-preview">Viber Account Number</div>
+                <button class="copy-btn" onclick="copyToClipboard('viber-account-preview')">Copy</button>
+            </div>
         </div>
     </div>
     
@@ -229,27 +414,92 @@
                     console.error('Failed to copy text: ', err);
                 });
         }
+        
+        // QR code related functions
+        let qrCode = null;
+        
+        function generateQRCode() {
+            const businessName = document.getElementById('business-input').value.trim();
+            const bmlAccount = document.getElementById('bml-input').value.trim();
+            const viberAccount = document.getElementById('viber-input').value.trim();
+            
+            if (!businessName || !bmlAccount || !viberAccount) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Update preview
+            document.getElementById('business-name-preview').innerText = businessName;
+            document.getElementById('bml-account-preview').innerText = bmlAccount;
+            document.getElementById('viber-account-preview').innerText = viberAccount;
+            
+            // Build URL for QR code
+            const baseUrl = window.location.href.split('?')[0];
+            const params = `?business=${encodeURIComponent(businessName)}&bml=${encodeURIComponent(bmlAccount)}&viber=${encodeURIComponent(viberAccount)}`;
+            const fullUrl = baseUrl + params;
+            
+            // Clear previous QR code
+            document.getElementById('qrcode').innerHTML = '';
+            
+            // Create new QR code
+            qrCode = new QRCode(document.getElementById('qrcode'), {
+                text: fullUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            
+            // Show QR code and download button
+            document.getElementById('qr-result').style.display = 'flex';
+            document.getElementById('download-btn').style.display = 'block';
+        }
+        
+        function downloadQRCode() {
+            if (!qrCode) return;
+            
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) return;
+            
+            const businessName = document.getElementById('business-input').value.trim();
+            const fileName = businessName.replace(/\s+/g, '_').toLowerCase() + '_qr_code.png';
+            
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Event listeners
+        document.getElementById('generate-btn').addEventListener('click', generateQRCode);
+        document.getElementById('download-btn').addEventListener('click', downloadQRCode);
 
-        // Read parameters from URL
-        const businessName = getUrlParameter('business');
-        const bmlAccount = getUrlParameter('bml');
-        const viberAccount = getUrlParameter('viber');
+        // Check for URL parameters when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const businessName = getUrlParameter('business');
+            const bmlAccount = getUrlParameter('bml');
+            const viberAccount = getUrlParameter('viber');
 
-        // Update the HTML with the parameters if they exist
-        if (businessName) {
-            document.getElementById('business-name').innerText = businessName;
-        }
-        if (bmlAccount) {
-            document.getElementById('bml-account').innerText = bmlAccount;
-        }
-        if (viberAccount) {
-            document.getElementById('viber-account').innerText = viberAccount;
-        }
-
-        // Set the page title to the business name
-        if (businessName) {
-            document.title = businessName;
-        }
+            // If parameters exist, update the preview section
+            if (businessName || bmlAccount || viberAccount) {
+                if (businessName) {
+                    document.getElementById('business-name-preview').innerText = businessName;
+                    document.title = businessName;
+                }
+                if (bmlAccount) {
+                    document.getElementById('bml-account-preview').innerText = bmlAccount;
+                }
+                if (viberAccount) {
+                    document.getElementById('viber-account-preview').innerText = viberAccount;
+                }
+                
+                // Also populate the form fields
+                if (businessName) document.getElementById('business-input').value = businessName;
+                if (bmlAccount) document.getElementById('bml-input').value = bmlAccount;
+                if (viberAccount) document.getElementById('viber-input').value = viberAccount;
+            }
+        });
     </script>
 </body>
 </html> 
