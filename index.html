@@ -278,7 +278,7 @@
             
             if (!accountName || !viberAccount || ((!bmlAccount && !mibAccount)) || !businessName) {
                 // Show error message in the UI
-                errorEl.querySelector('p').textContent = 'Please fill in all required fields (Account Name, Viber Account, and either BML or MIB Account)';
+                errorEl.querySelector('p').textContent = 'Please fill in all required fields (Account Name, Viber Account, and either BML or MIB Account) and Business Name';
                 errorEl.classList.remove('hidden');
                 errorEl.scrollIntoView({ behavior: 'smooth' });
                 return;
@@ -319,12 +319,12 @@
                     
                     // Draw white circle background
                     ctx.beginPath();
-                    ctx.arc(qrCanvas.width / 2, qrCanvas.height / 2, 30, 0, 2 * Math.PI);
+                    ctx.arc(qrCanvas.width / 2, qrCanvas.height / 2, 45, 0, 2 * Math.PI);
                     ctx.fillStyle = '#FFFFFF';
                     ctx.fill();
                     
                     // Draw letter
-                    ctx.font = 'bold 40px Roboto';
+                    ctx.font = 'bold 50px Roboto';
                     ctx.fillStyle = qrColor;
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
