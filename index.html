@@ -113,7 +113,7 @@
                 <div class="mb-6">
                     <label for="letter-input" class="block mb-2 font-medium">Letter (shown in middle) </label>
                     <div class="relative">
-                        <input id="letter-input" type="text" maxlength="1" 
+                        <input id="letter-input" type="text" maxlength="2" 
                                class="w-full p-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm">
                     </div>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">This letter will appear in the center of your QR code</p>
@@ -300,10 +300,16 @@
                 const qrCanvas = document.querySelector('#qrcode canvas');
                 if (qrCanvas) {
                     const ctx = qrCanvas.getContext('2d');
+
+                    // Check if letter is provided
+                    if (!qrLetter) {
+                        downloadQRCode();
+                        return;
+                    }
                     
                     // Draw white circle background
                     ctx.beginPath();
-                    ctx.arc(qrCanvas.width / 2, qrCanvas.height / 2, 24, 0, 2 * Math.PI);
+                    ctx.arc(qrCanvas.width / 2, qrCanvas.height / 2, 30, 0, 2 * Math.PI);
                     ctx.fillStyle = '#FFFFFF';
                     ctx.fill();
                     
@@ -316,13 +322,6 @@
                     
                     // Automatically download the QR code
                     downloadQRCode();
-                    
-                    // Show the confirmation message
-                    document.getElementById('qr-result').classList.remove('hidden');
-                    document.getElementById('qr-result').classList.add('flex', 'flex-col', 'items-center');
-                    
-                    // Scroll to the result message
-                    document.getElementById('qr-result').scrollIntoView({ behavior: 'smooth' });
                 }
             }, 200); // Increased delay to ensure QR code is fully rendered
         }
@@ -371,6 +370,18 @@
             link.download = accountName.replace(/\s+/g, '_').toLowerCase() + '_qr_code.png';
             link.href = downloadCanvas.toDataURL('image/png');
             link.click();
+
+            // Show the confirmation message
+            showConfirmationMessage();
+        }
+
+        function showConfirmationMessage() {
+            // Show the confirmation message
+            document.getElementById('qr-result').classList.remove('hidden');
+            document.getElementById('qr-result').classList.add('flex', 'flex-col', 'items-center');
+
+            // Scroll to the result message
+            document.getElementById('qr-result').scrollIntoView({ behavior: 'smooth' });
         }
         
         // Event listeners
