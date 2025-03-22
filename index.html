@@ -338,8 +338,8 @@
             const mibAccount = document.getElementById('mib-input').value.trim();
             const viberAccount = document.getElementById('viber-input').value.trim();
             
-            if (!businessName || !bmlAccount || !viberAccount) {
-                alert('Please fill in all required fields (Business Name, BML Account, and Viber Account)');
+            if (!businessName || !viberAccount || ((!bmlAccount && !mibAccount))) {
+                alert('Please fill in all required fields (Business Name, Viber Account, and either BML or MIB Account)');
                 return;
             }
             
