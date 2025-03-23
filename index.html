@@ -224,13 +224,22 @@
             const qrMessage = document.getElementById('message-input').value.trim();
             const qrColor = document.getElementById('color-input').value;
             
-            if (!accountName || !viberAccount || ((!bmlAccount && !mibAccount)) || !businessName) {
-                // Show error message in the UI
-                errorEl.querySelector('p').textContent = 'Please fill in all required fields (Account Name, Viber Account, and either BML or MIB Account) and Business Name';
+            // Check each required field individually
+            let missingFields = [];
+            
+            if (!accountName) missingFields.push("Account Name");
+            if (!viberAccount) missingFields.push("Viber Account");
+            if (!bmlAccount && !mibAccount) missingFields.push("either BML or MIB Account");
+            if (!businessName) missingFields.push("Business Name");
+            
+            if (missingFields.length > 0) {
+                // Show specific error message listing the missing fields
+                const missingFieldsText = missingFields.join(", ");
+                errorEl.querySelector('p').textContent = `Please fill in the following required fields: ${missingFieldsText}`;
                 errorEl.classList.remove('hidden');
                 errorEl.scrollIntoView({ behavior: 'smooth' });
                 return;
-            }            
+            }
             
             // Build URL for QR code
             // Get base URL dynamically
