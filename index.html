@@ -313,15 +313,16 @@
             ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, downloadCanvas.width, downloadCanvas.height);
             
-            // Add account name on top
+            // Add business name on top
             ctx.font = 'bold 30px Roboto';
             ctx.fillStyle = '#000000';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';            
-            ctx.fillText(businessName, downloadCanvas.width / 2, 15);
+            ctx.fillText(businessName, downloadCanvas.width / 2, 10);
+            const businessNameHeight = 25;
             
             // Draw QR code in the middle
-            ctx.drawImage(canvas, 30, padding);
+            ctx.drawImage(canvas, 30, padding + businessNameHeight);
             
             // Add message at bottom if exists
             if (qrMessage) {
