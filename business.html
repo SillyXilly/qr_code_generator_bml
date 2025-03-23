@@ -64,12 +64,12 @@
                 </div>
             </div>
 
-            <!-- Favarra Account Info Row -->
-            <div id="favarra-container" class="mb-5 bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center transition-colors duration-200">
+            <!-- Favara Account Info Row -->
+            <div id="favara-container" class="mb-5 bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center transition-colors duration-200">
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-2 w-16 h-16 flex justify-center items-center mr-4 shadow">
-                    <img src="logo/favarra_logo.png" alt="Favarra Logo" class="max-w-10 max-h-10 object-contain">
+                    <img src="logo/favara_logo.png" alt="Favara Logo" class="max-w-10 max-h-10 object-contain">
                 </div>
-                <div class="flex-grow text-base font-medium break-words cursor-pointer active:bg-blue-50 active:dark:bg-blue-900/30" id="favarra-account" onclick="copyToClipboard('favarra-account')">
+                <div class="flex-grow text-base font-medium break-words cursor-pointer active:bg-blue-50 active:dark:bg-blue-900/30" id="favara-account" onclick="copyToClipboard('favara-account')">
                 </div>
             </div>
 
@@ -127,7 +127,7 @@
         const accountName = urlParams.get('account');
         const bmlAccount = urlParams.get('bml');
         const mibAccount = urlParams.get('mib');
-        const favarraAccount = urlParams.get('favarra');
+        const favaraAccount = urlParams.get('favara');
         const viberAccount = urlParams.get('viber');
         
         document.title = accountName ? `${accountName} - Information` : 'Account Information';
@@ -160,15 +160,15 @@
             document.getElementById('mib-container').style.display = 'none';
         }
 
-        if (favarraAccount) {
+        if (favaraAccount) {
             // Create a span for the account number text and add it to the container
-            const accountEl = document.getElementById('favarra-account');
+            const accountEl = document.getElementById('favara-account');
             const accountText = document.createElement('span');
-            accountText.innerText = favarraAccount;
+            accountText.innerText = favaraAccount;
             accountText.className = 'account-text'; // Add a class for potential styling
             accountEl.insertBefore(accountText, accountEl.firstChild);
         } else {
-            document.getElementById('favarra-container').style.display = 'none';
+            document.getElementById('favara-container').style.display = 'none';
         }
         
         
