@@ -94,7 +94,16 @@
                                class="w-full p-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm">
                     </div>
                 </div>
-                
+
+                <!-- Favarra Account -->
+                <div class="mb-6">
+                    <label for="favarra-input" class="block mb-2 font-medium">Favarra Number <span class="text-yellow-500">*</span></label>
+                    <div class="relative">
+                        <input id="favarra-input" type="text" 
+                               class="w-full p-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-sm">
+                    </div>
+                </div>
+
                 <!-- Viber Account -->
                 <div class="mb-6">
                     <label for="viber-input" class="block mb-2 font-medium">Viber Number <span class="text-red-500">*</span></label>
@@ -217,7 +226,7 @@
             const bmlAccount = document.getElementById('bml-input').value.trim();
             const mibAccount = document.getElementById('mib-input').value.trim();
             const viberAccount = document.getElementById('viber-input').value.trim();
-            
+            const favarraAccount = document.getElementById('favarra-input').value.trim();
             // Get customization values
             const businessName = document.getElementById('business-input').value.trim();
             const qrLetter = document.getElementById('letter-input').value.trim().toUpperCase();
@@ -247,9 +256,9 @@
                 invalidFields.push("Viber Numer should be 7 digits");
             }
             
-            // At least one of BML or MIB is required
-            if (!bmlAccount && !mibAccount) {
-                missingFields.push("either BML or MIB Account");
+            // At least one of BML or MIB or Favarra is required 
+            if (!bmlAccount && !mibAccount && !favarraAccount) {
+                missingFields.push("either BML or MIB or Favarra Account");
             }
             
             if (!businessName) missingFields.push("Business Name");
@@ -280,7 +289,8 @@
             const baseUrl = `${currentUrl.protocol}//${currentUrl.host}${currentUrl.pathname.substring(0, currentUrl.pathname.lastIndexOf('/'))}/business.html`;
             const params = `?account=${encodeURIComponent(accountName)}&bml=${encodeURIComponent(bmlAccount)}&viber=${encodeURIComponent(viberAccount)}`;
             const mibParam = mibAccount ? `&mib=${encodeURIComponent(mibAccount)}` : '';
-            businessUrl = baseUrl + params + mibParam;
+            const favarraParam = favarraAccount ? `&favarra=${encodeURIComponent(favarraAccount)}` : '';
+            businessUrl = baseUrl + params + mibParam + favarraParam;
             
             // Clear previous QR code
             document.getElementById('qrcode').innerHTML = '';
