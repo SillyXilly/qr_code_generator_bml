@@ -211,7 +211,7 @@
 
         // Function to open Viber app
         function openViberApp() {
-            const viberAccount = document.querySelector('#viber-account .account-text').innerText;
+            let viberAccount = document.querySelector('#viber-account .account-text').innerText;
             if (!viberAccount) return;
 
             // Check if the Viber account is a 7-digit number
